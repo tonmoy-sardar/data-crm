@@ -1,0 +1,173 @@
+<loading [state]="loading">
+    <div>
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="page-header">Invoice List</h4>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+  
+      <hr/>
+      <div class="card form-group">
+        <div class="card-header" style="background: #fff;border: none;">
+          <div class="row">
+            <div class="col-md-3">
+              <select class="form-control">
+                <option value="">Select Customer Name</option>
+                <option value="">MK Sharma</option>
+                <option value="">AK Roy</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-control">
+                <option value="">Select Invoice</option>
+                <option value="">2018-06-09/INV-001</option>
+                <option value="">2018-06-09/INV-001</option>
+                <option value="">2018-06-09/INV-001</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #f="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="f.toggle()" type="button">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <select class="form-control">
+                <option value="">Select Status</option>
+                <option value="">Paid</option>
+                <option value="">Unpaid</option>
+                <option value="">Mailed</option>
+              </select>
+            </div>
+            <div class="col-md-1">
+              <button type="reset" class="btn btn-secondary">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <table class="card-body table table-hover table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                    <input type="checkbox">
+                  </th>
+                  <th>Sl.No.</th>
+                  <td>Invoice No.</td>
+                  <th>Customer Name</th>
+                  <th>Customer Address</th>
+                  <td>Due Amount</td>
+                  <td>Created Date</td>
+                  <td>Due Date</td>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td width="20px">
+                    <input type="checkbox">
+                  </td>
+                  <td>1</td>
+                  <td>2018-06-09/INV-001</td>
+                  <td>MK Sharma</td>
+                  <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
+                  <td>10000.00</td>
+                  <td>08-06-2018</td>
+                  <td>20-06-2018</td>
+                  <td>Unpaid</td>
+                  <td>
+                    <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                      <i class="fa fa-envelope"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="20px">
+                    <input type="checkbox">
+                  </td>
+                  <td>2</td>
+                  <td>2018-06-09/INV-0011</td>
+                  <td>Souvik K</td>
+                  <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
+                  <td>12000.00</td>
+                  <td>08-06-2018</td>
+                  <td>20-06-2018</td>
+                  <td>Mailed</td>
+                  <td>
+                    <!-- <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                      <i class="fa fa-envelope"></i>
+                    </a> -->
+                  </td>
+                </tr>
+                <tr>
+                  <td width="20px">
+                    <input type="checkbox">
+                  </td>
+                  <td>3</td>
+                  <td>2018-06-09/INV-0017</td>
+                  <td>MK Sharma</td>
+                  <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
+                  <td>10000.00</td>
+                  <td>08-06-2018</td>
+                  <td>20-06-2018</td>
+                  <td>Unpaid</td>
+                  <td>
+                    <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                      <i class="fa fa-envelope"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="20px">
+                    <input type="checkbox">
+                  </td>
+                  <td>4</td>
+                  <td>2018-06-09/INV-0013</td>
+                  <td>RK Singh</td>
+                  <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
+                  <td>7000.00</td>
+                  <td>08-06-2018</td>
+                  <td>20-06-2018</td>
+                  <td>Paid</td>
+                  <td>
+                    <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                      <i class="fa fa-envelope"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="20px">
+                    <input type="checkbox">
+                  </td>
+                  <td>5</td>
+                  <td>2018-06-09/INV-009</td>
+                  <td>KL Kumar</td>
+                  <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
+                  <td>0.00</td>
+                  <td>08-06-2018</td>
+                  <td>20-06-2018</td>
+                  <td>Paid</td>
+                  <td>
+                    <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                      <i class="fa fa-envelope"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="col-md-12 text-right" style="margin-bottom: 15px;">
+              <button type="submit" class="btn btn-primary">Send Email</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </loading>

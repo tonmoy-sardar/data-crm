@@ -12,6 +12,8 @@ import { AuthGuard } from './guard/auth.guard';
 
 // services
 import { LoginService } from './services/login.service';
+import { CustomerService } from './services/customer.service';
+import { InvoiceService } from './services/invoice.service';
 
 // Material
 import {
@@ -77,7 +79,9 @@ export class CoreModule {
       ngModule: CoreModule,
       providers: [
         AuthGuard,
-        LoginService
+        LoginService,
+        CustomerService,
+        InvoiceService
       ]
     };
   }
