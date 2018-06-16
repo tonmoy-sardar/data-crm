@@ -1,21 +1,48 @@
 <header>
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-        <a class="navbar-brand" [routerLink]="['.']">
+    <nav class="navbar navbar-expand-lg no-padding">
+        <a class="navbar-brand main-logo" href="#">
             <img class="img-fluid" src="assets/images/logo.png" alt="" />
         </a>
-        <ul class="navbar-nav justify-content-end">
-            <li class="nav-item active">
-                <a class="nav-link" [routerLink]="['.']">Active</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['.']">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['.']">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['.']">Disabled</a>
-            </li>
-        </ul>
+        <button class="navbar-toggler pull-right" type="button" (click)="toggleSidebar()">
+            <i class="fa fa-bars text-muted" aria-hidden="true"></i>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto nav-full-pading">
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+                        <i class="fa fa-building-o"></i> Invoice
+                        <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu-right" ngbDropdownMenu>
+                        <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/invoices']">
+                            <i class="fa fa-university" aria-hidden="true"></i> Invoice List
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+                        <i class="fa fa-building-o"></i> Customer
+                        <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu-right" ngbDropdownMenu>
+                        <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/customers']">
+                            <i class="fa fa-university" aria-hidden="true"></i> Customer List
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" ngbDropdown>
+                    <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
+                        <i class="fa fa-user"></i> Admin
+                        <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu-right" ngbDropdownMenu>
+                        <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
+                            <i class="fa fa-fw fa-power-off"></i>Log Out
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div style="width: 110px;"></div>
     </nav>
 </header>
