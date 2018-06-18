@@ -15,59 +15,52 @@
               <div class="col-md-9">
                 <h5>Customers</h5>
               </div>
+              <div class="col-md-3">
+                  <form role="form" (ngSubmit)="dataSearch()">
+                      <div class="input-group">
+                          <input type="text" class="form-control" name="search" placeholder="Search" [(ngModel)]="search_key">
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit">
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                  </form>
+              </div>
             </div>
           </div>
           <table class="card-body table table-hover table-sm table-bordered">
             <thead>
               <tr>
                 <th>Sl.No.</th>
-                <th>Customer ID</th>
                 <th>Customer Name</th>
                 <th>Address</th>
                 <th>DOB</th>
                 <th>Email</th>
-                <th>Mobile</th>
+                <th>Contact</th>
+                <th>Alt Contact</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>01</td>
-                <td>AK Roy</td>
-                <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
-                <td>12-02-1989</td>
-                <td>ark@gmail.com</td>
-                <td>9912648236</td>
+              <tr *ngFor="let customer of customerList; let i =index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{customer.name}}</td>
+                <td>{{customer.address}}</td>
+                <td>{{customer.dob | date:'dd-MM-yyyy'}}</td>
+                <td>{{customer.email}}</td>
+                <td>{{customer.contact}}</td>
+                <td>{{customer.alt_contact}}</td>
               </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>01</td>
-                <td>AK Roy</td>
-                <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
-                <td>12-02-1989</td>
-                <td>ark@gmail.com</td>
-                <td>9912648236</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>01</td>
-                <td>AK Roy</td>
-                <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
-                <td>12-02-1989</td>
-                <td>ark@gmail.com</td>
-                <td>9912648236</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>01</td>
-                <td>AK Roy</td>
-                <td>EN 32, Salt lake, Sector V, Kolkata-700091</td>
-                <td>12-02-1989</td>
-                <td>ark@gmail.com</td>
-                <td>9912648236</td>
-              </tr>
+              <tr *ngIf="customerList.length == 0">
+                  <td colspan="12" class="text-center">No record found</td>
+                </tr>
             </tbody>
           </table>
+          <div class="col-md-12">
+              <div class="pagination-msg" *ngIf="totalCustomerList > 0">
+                <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+              </div>
+          </div>
         </div>
       </div>
     </div>
