@@ -1,6 +1,8 @@
 <loading [state]="loading">
     <div>
+      <!-- <form role="form" novalidate> -->
       <div class="row">
+        
         <div class="col-md-6">
           <h4 class="page-header">Invoice List</h4>
         </div>
@@ -12,23 +14,20 @@
         <div class="card-header" style="background: #fff;border: none;">
           <div class="row">
             <div class="col-md-3">
-              <select class="form-control">
+              <select class="form-control" (change)="customerNameChange($event.target.value)"  name="customer" [(ngModel)]="customer">
                 <option value="">Select Customer Name</option>
-                <option value="">MK Sharma</option>
-                <option value="">AK Roy</option>
+                <option value="{{customerName.id}}" *ngFor="let customerName of customerName_list">{{customerName.name}}</option>
               </select>
             </div>
             <div class="col-md-3">
-              <select class="form-control">
+              <select class="form-control" name="customerInvoice" [(ngModel)]="customerInvoice" >
                 <option value="">Select Invoice</option>
-                <option value="">2018-06-09/INV-001</option>
-                <option value="">2018-06-09/INV-001</option>
-                <option value="">2018-06-09/INV-001</option>
+                <option  *ngFor="let customer_invoice of customer_invoice_list" value="{{customer_invoice.id}}">{{customer_invoice.purchase_inv_no}}</option>
               </select>
             </div>
             <div class="col-md-3">
               <div class="input-group">
-                <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #f="ngbDatepicker">
+                <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #f="ngbDatepicker" [(ngModel)]="date" >
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" (click)="f.toggle()" type="button">
                     <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -37,15 +36,15 @@
               </div>
             </div>
             <div class="col-md-2">
-              <select class="form-control">
+              <select class="form-control" [(ngModel)]="status" name="status">
                 <option value="">Select Status</option>
-                <option value="">Paid</option>
-                <option value="">Unpaid</option>
-                <option value="">Mailed</option>
+                <option value="paid">Paid</option>
+                <option value="unpaid">Unpaid</option>
+                <option value="mailed">Mailed</option>
               </select>
             </div>
             <div class="col-md-1">
-              <button type="reset" class="btn btn-secondary">Search</button>
+              <button type="submit" class="btn btn-secondary" (click)="search()">Search</button>
             </div>
           </div>
         </div>
@@ -57,15 +56,15 @@
               <thead>
                 <tr>
                   <th>
-                    <input type="checkbox">
+                    <input type="checkbox" [(ngModel)]="selectedAll"  (click)="toggleAll($event)">
                   </th>
                   <th>Sl.No.</th>
-                  <td>Invoice No.</td>
+                  <th>Invoice No.</th>
                   <th>Customer Name</th>
                   <th>Customer Address</th>
-                  <td>Due Amount</td>
-                  <td>Created Date</td>
-                  <td>Due Date</td>
+                  <th>Due Amount</th>
+                  <th>Created Date</th>
+                  <th>Due Date</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -73,7 +72,7 @@
               <tbody>
                 <tr *ngFor="let invoice of invoiceList ; let i = index">
                   <td width="20px">
-                  <input type="checkbox">
+                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id)" >
                   </td>
                   <td>{{i +1}}</td>
                   <td>{{invoice.purchase_inv_no}}</td>
@@ -88,18 +87,27 @@
                   </td>
                   <td>
                     <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
-                      <i class="fa fa-envelope"></i>
+                      <i  (click)="sendMailByCustomer($event,invoice.customer_details.id)" class="fa fa-envelope"></i>
                     </a>
                   </td>
                 </tr>
-                
+                <tr *ngIf="invoiceList.length == 0">
+                    <td colspan="12" class="text-center">No record found</td>
+                  </tr>
               </tbody>
             </table>
             <div class="col-md-12 text-right" style="margin-bottom: 15px;">
-              <button type="submit" class="btn btn-primary">Send Email</button>
+              <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoice($event)">Send Email</button>
+            </div>
+            <div class="col-md-12">
+                <div class="pagination-msg" *ngIf="totalInvoiceList > 0">
+                  <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+                </div>
             </div>
           </div>
         </div>
+     
       </div>
+    <!-- </form>  -->
     </div>
   </loading>

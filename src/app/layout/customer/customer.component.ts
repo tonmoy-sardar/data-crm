@@ -14,6 +14,7 @@ export class CustomerComponent implements OnInit {
   customerList = [];
   defaultPagination: number;
   totalCustomerList: number;
+  search_key = '';
   lower_count: number;
   upper_count: number;
   paginationMaxSize: number;
@@ -33,17 +34,27 @@ export class CustomerComponent implements OnInit {
     this.getCustomerList();
   }
 
+  dataSearch() {
+    //console.log('sss');
+    this.loading = LoadingState.Processing;
+    this.defaultPagination = 1;
+    this.getCustomerList();
+  }
+
   getCustomerList() {
     let params: URLSearchParams = new URLSearchParams();
     params.set('page', this.defaultPagination.toString());
+    if (this.search_key != '') {
+      params.set('search', this.search_key.toString());
+    }
     this.customerService.getCustomerList(params).subscribe(
       (data: any[]) => {
         this.totalCustomerList = data['count'];
         this.customerList = data['results'];
-        console.log(this.customerList)
+        //console.log(this.customerList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
-        console.log(this.lower_count)
+        //console.log(this.lower_count)
         if (this.totalCustomerList > this.itemPerPage * this.defaultPagination) {
           this.upper_count = this.itemPerPage * this.defaultPagination
         }

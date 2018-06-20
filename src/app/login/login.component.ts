@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
           this.goToPage('dashboard');
         },
         error => {
+          console.log(error.error);
           this.loading = LoadingState.Ready;
           this.toastr.error(error.error.non_field_errors[0], '', {
             timeOut: 3000,
