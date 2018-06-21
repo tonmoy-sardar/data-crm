@@ -1,14 +1,11 @@
 <loading [state]="loading">
   <div>
-    <!-- <form role="form" novalidate> -->
     <div class="row">
-
       <div class="col-md-6">
         <h4 class="page-header">Invoice List</h4>
       </div>
       <div class="clearfix"></div>
     </div>
-
     <hr/>
     <div class="card form-group">
       <div class="card-header" style="background: #fff;border: none;">
@@ -20,7 +17,7 @@
             </select>
           </div>
           <div class="col-md-3">
-            <select class="form-control" name="customerInvoice" (change)="customerInvoiceChange($event.target.value)" [(ngModel)]="customerInvoice">
+            <select class="form-control" name="customerInvoice" (change)="customerInvoiceChange($event.target.value)">
               <option value="">Select Invoice</option>
               <option *ngFor="let customer_invoice of customer_invoice_list" value="{{customer_invoice.id}}">{{customer_invoice.purchase_inv_no}}</option>
             </select>
@@ -52,6 +49,13 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card" *ngIf="Search_invoice_list_key">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-9">
+                <h5>Invoices</h5>
+              </div>
+            </div>
+          </div>
           <table class="card-body table table-hover table-sm table-bordered">
             <thead>
               <tr>
@@ -98,7 +102,8 @@
                   <label *ngIf="invoice.is_approve==3">Rejected</label>
                 </td>
                 <td>
-                  <a href="javascript:void(0);" class="anchor-action" title="approval request" name="Send Mail" *ngIf="invoice.is_approve==0" (click)="sendMailByAllInvoice($event,invoice.customer_details.id)">
+                  <a href="javascript:void(0);" class="anchor-action" title="approval request" name="approval request" *ngIf="invoice.is_approve==0"
+                    (click)="sendMailByAllInvoice($event,invoice.customer_details.id)">
                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                   </a>
                 </td>
@@ -119,41 +124,42 @@
         </div>
 
       </div>
-      <div class="card" *ngIf="invoice_details_key">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Invoice Number :{{invoiceList.purchase_inv_no}} </h5>
+      <div class="col-md-12">
+        <div class="card" *ngIf="invoice_details_key">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Invoice Number :{{invoiceList.purchase_inv_no}} </h5>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <table class="card-body table table-hover table-sm table-bordered">
-                <tbody>
-                  <tr>
-                    <td>Customer Name :{{invoiceList.customer_details.name}}</td>
-                    <td>Customer Addrerss :{{invoiceList.customer_details.address}}</td>
-                    <td>Due Amount : {{invoiceList.due_amount}}</td>
-                    <td>created_at:{{invoiceList.created_at | date:'dd-MM-yyyy' }}</td>
-                    <td>Due Date :{{invoiceList.due_date | date:'dd-MM-yyyy'}}</td>
-                    <td>
-                      <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
-                        <i (click)="sendMailByAllInvoice($event,invoiceList.customer_details.id)" class="fa fa-envelope"></i>
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="card-body table table-hover table-sm table-bordered">
+                  <tbody>
+                    <tr>
+                      <td>Customer Name :{{invoiceList.customer_details.name}}</td>
+                      <td>Customer Addrerss :{{invoiceList.customer_details.address}}</td>
+                      <td>Due Amount : {{invoiceList.due_amount}}</td>
+                      <td>created_at:{{invoiceList.created_at | date:'dd-MM-yyyy' }}</td>
+                      <td>Due Date :{{invoiceList.due_date | date:'dd-MM-yyyy'}}</td>
+                      <td>
+                        <a href="javascript:void(0);" class="anchor-action" title="approval request" name="approval request" (click)="sendMailByAllInvoice($event,invoiceList.customer_details.id)">
+                          <i class="fa fa-paper-plane"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
 
   </div>
-  <!-- </form>  -->
 
 </loading>
