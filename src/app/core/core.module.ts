@@ -17,6 +17,7 @@ import { LoginService } from './services/login.service';
 import { CustomerService } from './services/customer.service';
 import { InvoiceService } from './services/invoice.service';
 import { ApprovalInvoiceService } from './services/approval-invoice.service';
+import { EmployeesService } from './services/employees.service';
 
 // Material
 import {
@@ -31,6 +32,7 @@ import {
 // component
 import { HeaderComponent } from './component/header/header.component';
 import { LoadingComponent } from './component/loading/loading.component';
+
 
 @NgModule({
   imports: [
@@ -89,7 +91,8 @@ export class CoreModule {
         LoginService,
         CustomerService,
         InvoiceService,
-        ApprovalInvoiceService
+        ApprovalInvoiceService,
+        EmployeesService
       ]
     };
   }
