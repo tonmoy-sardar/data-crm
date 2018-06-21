@@ -50,6 +50,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('logedUserToken');
     localStorage.removeItem('logedUserUserId');
     localStorage.removeItem('logedUserUserName');
+    localStorage.removeItem('userRole');
   }
 
 }
