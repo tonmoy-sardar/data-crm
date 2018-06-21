@@ -1,87 +1,94 @@
 <loading [state]="loading">
-    <div>
-        <div class="row">
-          <div class="col-md-6">
-            <h4 class="page-header">Invoice List</h4>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-    
-        <hr/>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <table class="card-body table table-hover table-sm table-bordered">
-                <thead>
-                  <tr>
-                    <th>
-                      <input type="checkbox" [(ngModel)]="selectedAll" (click)="toggleAll($event)">
-                    </th>
-                    <th>Sl.No.</th>
-                    <th>Invoice No.</th>
-                    <th>Customer Name</th>
-                    <th>Customer Address</th>
-                    <th>Due Amount</th>
-                    <th>Created Date</th>
-                    <th>Due Date</th>
-                    <th>Mail</th>
-                    <th>Paid</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let invoice of approvalInvoiceList ; let i = index">
-                    <td width="20px">
-                    <input type="checkbox"  [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id,invoice.id)">
-                    </td>
-                    <td>{{i +1}}</td>
-                    <td>{{invoice.purchase_inv_no}}</td>
-                    <td>{{invoice.customer_details.name}}</td>
-                    <td>{{invoice.customer_details.address}}</td>
-                    <td>{{invoice.due_amount}}</td>
-                    <td>{{invoice.created_at | date:'dd-MM-yyyy'}}</td>
-                    <td>{{invoice.due_date | date:'dd-MM-yyyy'}}</td>
-                    <td> 
-                      <label *ngIf="invoice.mail_status==false">Unmailed</label>
-                      <label *ngIf="invoice.mail_status==true">Mailed</label>
-                    </td>
-                    <td> 
-                      <label *ngIf="invoice.paid_status==false">Unpaid</label>
-                      <label *ngIf="invoice.paid_status==true">paid</label>
-                    </td>
-                    <td>
-                        <label *ngIf="invoice.is_approve == 0">None</label>
-                        <label *ngIf="invoice.is_approve == 1">Pending</label>
-                        <label *ngIf="invoice.is_approve == 2">Approved</label>
-                        <label *ngIf="invoice.is_approve == 3">Rejected</label>
-                        <select class="form-control" name="is_approve" (change)="changeApproveStatus($event.target.value,invoice.customer_details.id)">
-                          <option value='0'>Change Approve</option>
-                          <option value='2'>Approve</option>
-                          <option value='3'>Dis-Approve</option>
-                        </select>
-                    </td>
-                  </tr>
-                  <tr *ngIf="approvalInvoiceList.length == 0">
-                      <td colspan="12" class="text-center">No record found</td>
-                    </tr>
-                </tbody>
-              </table>
-              <div class="col-md-12 text-right" style="margin-bottom: 15px;">
-                <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'2')">Approve</button>
-                <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'3')">Reject</button>
-              </div>
-              
-              <div class="col-md-12">
-                  <div class="pagination-msg" *ngIf="totalInvoiceList > 0">
-                    <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
-                  </div>
+  <div>
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="page-header">Invoice List</h4>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-9">
+                <h5>Invoices</h5>
               </div>
             </div>
-            
+          </div>
+          <table class="card-body table table-hover table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" [(ngModel)]="selectedAll" (click)="toggleAll($event)">
+                </th>
+                <th>Sl.No.</th>
+                <th>Invoice No.</th>
+                <th>Customer Name</th>
+                <th>Customer Address</th>
+                <th>Due Amount</th>
+                <th>Created Date</th>
+                <th>Due Date</th>
+                <th>Mail</th>
+                <th>Paid</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let invoice of approvalInvoiceList ; let i = index">
+                <td width="20px">
+                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id,invoice.id)">
+                </td>
+                <td>{{i +1}}</td>
+                <td>{{invoice.purchase_inv_no}}</td>
+                <td>{{invoice.customer_details.name}}</td>
+                <td>{{invoice.customer_details.address}}</td>
+                <td>{{invoice.due_amount}}</td>
+                <td>{{invoice.created_at | date:'dd-MM-yyyy'}}</td>
+                <td>{{invoice.due_date | date:'dd-MM-yyyy'}}</td>
+                <td>
+                  <label *ngIf="invoice.mail_status==false">Unmailed</label>
+                  <label *ngIf="invoice.mail_status==true">Mailed</label>
+                </td>
+                <td>
+                  <label *ngIf="invoice.paid_status==false">Unpaid</label>
+                  <label *ngIf="invoice.paid_status==true">paid</label>
+                </td>
+                <td>
+                  <label *ngIf="invoice.is_approve == 0" style="display: inline;">None</label>
+                  <label *ngIf="invoice.is_approve == 1" style="display: inline;">Pending</label>
+                  <label *ngIf="invoice.is_approve == 2" style="display: inline;">Approved</label>
+                  <label *ngIf="invoice.is_approve == 3" style="display: inline;">Rejected</label>
+                  <select class="form-control" style="display: inline-flex; width: 81%;" name="is_approve" (change)="changeApproveStatus($event.target.value,invoice.customer_details.id)">
+                    <option value='0'>Change Approve</option>
+                    <option value='2'>Approve</option>
+                    <option value='3'>Dis-Approve</option>
+                  </select>
+                </td>
+              </tr>
+              <tr *ngIf="approvalInvoiceList.length == 0">
+                <td colspan="12" class="text-center">No record found</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12 text-right" style="margin-bottom: 15px;">
+            <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'2')">Approve</button>
+            <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'3')">Reject</button>
+          </div>
+
+          <div class="col-md-12">
+            <div class="pagination-msg" *ngIf="totalInvoiceList > 0">
+              <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+            </div>
+          </div>
         </div>
-          
-        </div>
-       
-      </div>    
+
+      </div>
+
+    </div>
+
+  </div>
 </loading>

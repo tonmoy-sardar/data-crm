@@ -14,7 +14,7 @@ export class LoginService {
   }
 
   loginByToken(data): Observable<any>{
-    return this.http.post(environment.apiEndpoint+'login/', data)
+    return this.http.post(environment.apiEndpoint+'token_login/', data)
   }
 
 }
