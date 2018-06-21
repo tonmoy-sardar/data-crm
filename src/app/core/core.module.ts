@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { NgSelectModule } from '@ng-select/ng-select';
 // directive
 import { OnlyNumberDirective } from './directive/only-number.directive';
 
@@ -38,6 +40,8 @@ import { LoadingComponent } from './component/loading/loading.component';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPermissionsModule,
+    NgSelectModule,
     //----------------Material----------------//
     MatAutocompleteModule,MatButtonModule,MatButtonToggleModule,
     MatCardModule,MatCheckboxModule,MatChipsModule,MatStepperModule,MatDatepickerModule,
@@ -57,6 +61,8 @@ import { LoadingComponent } from './component/loading/loading.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPermissionsModule,
+    NgSelectModule,
     //----------------Material----------------//
     MatAutocompleteModule,MatButtonModule,MatButtonToggleModule,
     MatCardModule,MatCheckboxModule,MatChipsModule,MatStepperModule,MatDatepickerModule,

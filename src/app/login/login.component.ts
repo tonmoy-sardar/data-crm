@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
       this.loading = LoadingState.Processing;
       this.loginService.login(this.form.value).subscribe(
         response => {
+          // console.log(response)
           this.loading = LoadingState.Ready;
           this.toastr.success('Login successfully', '', {
             timeOut: 3000,
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('logedUserToken', response.token);
           localStorage.setItem('logedUserUserId', response.user_id);
           localStorage.setItem('logedUserUserName', response.username);
+          localStorage.setItem('userRole', response.user_role);
           this.goToPage('dashboard');
         },
         error => {

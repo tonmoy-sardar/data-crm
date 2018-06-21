@@ -3,7 +3,7 @@
 }
 
 .main-body .navbar {
-    background-color: #284c6f !important;
+    background-color: #1b657e !important;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
 }
 
@@ -14,12 +14,12 @@
 }
 
 .main-body .dropdown-menu a {
-    background-color: #284c6f !important;
+    background-color: #1e271d !important;
     padding: 10px;
 }
 
 .main-body .dropdown-menu a:hover {
-    background-color: #0c559c !important;
+    background-color: #1e271d !important;
 }
 
 .dropdown-menu {
@@ -61,7 +61,7 @@
 .main-body .ibox {
     height: 5px;
     width: 166px;
-    background: #1976d2;
+    background: #1e271d;
     display: inline-block;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .cata-gory .inner-contant a:hover {
-    background: #094d90;
+    background: #1e271d;
     color: #fff;
     transition: all .40s ease;
 }
@@ -139,13 +139,14 @@
 }
 
 .btn-primary {
-    background-color: #284c6f !important;
-    border-color: #284c6f !important;
+    color: #fff;
+    background-color: #1e271d;
+    border-color: #1e271d;
 }
 
 .btn-primary:hover {
-    background-color: #1a3650 !important;
-    border-color: #1a3650 !important;
+    background-color: #1b657e;
+    border-color: #1b657e;
 }
 
 .anchor-action {
@@ -164,7 +165,7 @@
 }
 
 .nav-full-pading .nav-item .nav-link:hover {
-    background-color: #0c559c;
+    background-color: #1e271d;
     transition: all .40s ease;
 }
 
@@ -195,29 +196,67 @@
     cursor: pointer;
     color: #000;
 }
-.form-control.ng-select{
+
+.form-control.ng-select {
     padding: 0;
 }
-.ng-select.ng-select-single .ng-select-container{
+
+.ng-select.ng-select-single .ng-select-container {
     border: none;
     height: calc(1.875rem + 2px);
     min-height: calc(1.875rem + 2px);
 }
 
-.mat-dialog-container .modal-footer{
+.mat-dialog-container .modal-footer {
     border: none;
 }
 
-.inactive-color
-{
+.inactive-color {
     color: #cecece !important;
 }
 
-.active-color
-{
+.active-color {
     color: #284c6f !important;
 }
-.custom-table-head
-{
+
+.custom-table-head {
     cursor: pointer;
+}
+
+.card {
+    -webkit-box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.11);
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.11)
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #1e271d;
+    border-color: #1e271d;
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #1b657e;
+    border-color: #1b657e;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
+.show>.btn-outline-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #1e271d;
+    border-color: #1e271d;
+}
+
+.btn-outline-secondary {
+    color: #1e271d;
+    background-color: transparent;
+    background-image: none;
+    border-color: #1e271d;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #1b657e;
+    border-color: #1b657e;
 }
