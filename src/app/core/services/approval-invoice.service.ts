@@ -19,7 +19,7 @@ export class ApprovalInvoiceService {
 
   sendMailByAllInvoiceApproval(data): Observable<any>{
     //console.log("ss"+data)
-    return this.http.post(environment.apiEndpoint+'send_mail_by_all_invoice/', data, {
+    return this.http.post(environment.apiEndpoint+'invoice_send_mail/', data, {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }

@@ -46,10 +46,6 @@ export class InvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  
-  // this.form = this.formBuilder.group({
-    
-  //   });
     this.selectedCustomer = []
     this.selectedInv= false;
     this.customer ='';
@@ -71,7 +67,7 @@ export class InvoiceComponent implements OnInit {
       (data: any[]) => {
         this.totalInvoiceList = data['count'];
         this.invoiceList = data['results'];
-        //console.log(this.invoiceList)
+       // console.log(this.invoiceList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
         //console.log(this.lower_count)
@@ -112,6 +108,7 @@ export class InvoiceComponent implements OnInit {
   //change customername
   customerNameChange(id){
     //console.log(id);
+   
     if(id)
     {
       this.invoiceService.getInvoiceByCustomerId(id).subscribe(res => {
@@ -120,6 +117,7 @@ export class InvoiceComponent implements OnInit {
     }
     else{
       this.getInvoiceList();
+      this.customer_invoice_list=[]=[];
     }
     
   }
@@ -147,13 +145,18 @@ customerInvoiceChange(id){
     if(val.target.checked){
         this.invoiceList.forEach((invoice) => {
         invoice.checked = true;
-        var d = {
-          cust_id: invoice.customer_details.id,
-          pur_id: invoice.id
+        if(invoice.is_approve=='0')
+        {
+          var d = {
+            cust_id: invoice.customer_details.id,
+            pur_id: invoice.id
+          }
+          
         }
-        //console.log("sss"+invoice.customer_details.id);
         this.selectedCustomer.push(d)
       });
+      //console.log("sss"+this.selectedCustomer[0]);
+      //console.log(JSON.parse(JSON.stringify(this.selectedCustomer)))
     }
     else{
         this.invoiceList.forEach((invoice) => {
@@ -180,10 +183,6 @@ customerInvoiceChange(id){
     // console.log(this.selectedCustomer);
   }
 
-  //click on mail icon
-  sendMailByCustomer(e,invoice){
-    //console.log(invoice);
-  }
   //send mail to all checked
   sendMailByAllInvoice(e)
   {
@@ -244,7 +243,7 @@ customerInvoiceChange(id){
     this.invoiceService.getSearchInvoiceList(params).subscribe(
       (data: any[]) => {
         this.invoiceList = data['results'];
-        //console.log(this.invoiceList)
+        console.log(this.invoiceList)
         this.invoice_details_key = false;
         this.Search_invoice_list_key = true;
         this.loading = LoadingState.Ready;

@@ -44,7 +44,7 @@ export class InvoiceService {
 
   sendMailByAllInvoice(data): Observable<any>{
     //console.log("ss"+data)
-    return this.http.post(environment.apiEndpoint+'invoice_send_mail/', data, {
+    return this.http.post(environment.apiEndpoint+'admin_send_mail/', data, {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }

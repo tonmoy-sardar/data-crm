@@ -100,7 +100,8 @@ export class ApprovalInvoiceComponent implements OnInit {
     {
       var d = {
         cust_id: invoice,
-        pur_id: purInvId
+        pur_id: purInvId,
+        approve :''
       }
       this.selectedCustomer.push(d);
       
@@ -109,16 +110,17 @@ export class ApprovalInvoiceComponent implements OnInit {
       let index = this.selectedCustomer.indexOf(invoice);
       this.selectedCustomer.splice(index, 1);
     }
-     console.log(this.selectedCustomer);
   }
 
   sendMailByAllInvoiceApproval(e,appVal){
   if(this.selectedCustomer.length>0){
-    var apr = {
-      app_val : appVal
+    for (let i = 0; i < this.selectedCustomer.length ; i++) {
+      if(this.selectedCustomer[i].approve==undefined)
+      {
+        this.selectedCustomer[i].approve=appVal;
+      }
     }
-    this.selectedCustomer.push(apr);
-    console.log(this.selectedCustomer);
+    //console.log("fnl"+this.selectedCustomer[0].pur_id);
     this.approvalInvoiceService.sendMailByAllInvoiceApproval(this.selectedCustomer).subscribe(
       response => {
         // console.log(response)
