@@ -14,6 +14,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { LoginService } from './services/login.service';
 import { CustomerService } from './services/customer.service';
 import { InvoiceService } from './services/invoice.service';
+import { ApprovalInvoiceService } from './services/approval-invoice.service';
 
 // Material
 import {
@@ -81,7 +82,8 @@ export class CoreModule {
         AuthGuard,
         LoginService,
         CustomerService,
-        InvoiceService
+        InvoiceService,
+        ApprovalInvoiceService
       ]
     };
   }

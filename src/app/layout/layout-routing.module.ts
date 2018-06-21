@@ -10,7 +10,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'customers', loadChildren: './customer/customer.module#CustomerModule' },
-      { path: 'invoices', loadChildren: './invoice/invoice.module#InvoiceModule' }
+      { path: 'invoices', loadChildren: './invoice/invoice.module#InvoiceModule' },
+      { path: 'approval-invoice', loadChildren: './approval-invoice/approval-invoice.module#ApprovalInvoiceModule' }
     ]
   }
 ];

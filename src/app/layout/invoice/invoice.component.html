@@ -1,5 +1,5 @@
 <loading [state]="loading">
-    <div>
+  <div>
       <!-- <form role="form" novalidate> -->
       <div class="row">
         
@@ -20,7 +20,7 @@
               </select>
             </div>
             <div class="col-md-3">
-              <select class="form-control" name="customerInvoice" [(ngModel)]="customerInvoice" >
+              <select class="form-control" name="customerInvoice" (change)="customerInvoiceChange($event.target.value)" [(ngModel)]="customerInvoice" >
                 <option value="">Select Invoice</option>
                 <option  *ngFor="let customer_invoice of customer_invoice_list" value="{{customer_invoice.id}}">{{customer_invoice.purchase_inv_no}}</option>
               </select>
@@ -51,7 +51,7 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
+          <div class="card" *ngIf="Search_invoice_list_key">
             <table class="card-body table table-hover table-sm table-bordered">
               <thead>
                 <tr>
@@ -72,7 +72,7 @@
               <tbody>
                 <tr *ngFor="let invoice of invoiceList ; let i = index">
                   <td width="20px">
-                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id)" >
+                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id,invoice.id)" >
                   </td>
                   <td>{{i +1}}</td>
                   <td>{{invoice.purchase_inv_no}}</td>
@@ -86,8 +86,8 @@
                     <label *ngIf="invoice.paid_status==true">paid</label>
                   </td>
                   <td>
-                    <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
-                      <i  (click)="sendMailByCustomer($event,invoice.customer_details.id)" class="fa fa-envelope"></i>
+                    <a href="javascript:void(0);" class="anchor-action" title="approval" name="Send Mail">
+                      <i  (click)="sendMailByAllInvoice($event,invoice.customer_details.id)" class="fa fa-check" aria-hidden="true"></i>
                     </a>
                   </td>
                 </tr>
@@ -97,7 +97,7 @@
               </tbody>
             </table>
             <div class="col-md-12 text-right" style="margin-bottom: 15px;">
-              <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoice($event)">Send Email</button>
+              <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoice($event)">Approval</button>
             </div>
             <div class="col-md-12">
                 <div class="pagination-msg" *ngIf="totalInvoiceList > 0">
@@ -105,9 +105,40 @@
                 </div>
             </div>
           </div>
-        </div>
-     
+          
       </div>
-    <!-- </form>  -->
+        <div class="card" *ngIf="invoice_details_key">
+         <div class="card-header">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Invoice Number :{{invoiceList.purchase_inv_no}} </h5>
+                  </div>
+            </div>
+         </div>
+         <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                  <table class="card-body table table-hover table-sm table-bordered">
+                    <tbody><tr>
+                      <td>Customer Name :{{invoiceList.customer_details.name}}</td>
+                      <td>Customer Addrerss :{{invoiceList.customer_details.address}}</td>
+                      <td>Due Amount : {{invoiceList.due_amount}}</td>
+                      <td>created_at:{{invoiceList.created_at | date:'dd-MM-yyyy' }}</td>
+                      <td>Due Date :{{invoiceList.due_date | date:'dd-MM-yyyy'}}</td>
+                      <td> <a href="javascript:void(0);" class="anchor-action" title="Send Mail" name="Send Mail">
+                          <i  (click)="sendMailByAllInvoice($event,invoiceList.customer_details.id)" class="fa fa-envelope"></i>
+                        </a></td>
+                    </tr>
+                  </tbody>
+                    </table>
+                </div>
+            </div>
+         </div>
+
+        </div>
+      </div>
+     
     </div>
-  </loading>
+    <!-- </form>  -->
+    
+</loading>

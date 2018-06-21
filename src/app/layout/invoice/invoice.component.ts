@@ -15,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 export class InvoiceComponent implements OnInit {
   //form: FormGroup;
   loading: LoadingState = LoadingState.NotReady;
-  Search_requisition_list_key: boolean;
   totalInvoiceList: number;
   invoiceList = [];
   lower_count: number;
@@ -35,6 +34,8 @@ export class InvoiceComponent implements OnInit {
   defaultPagination: number;
   selectedInv;
   customerIdForMail: any[] = [];
+  invoice_details_key : boolean;
+  Search_invoice_list_key : boolean;
 
   constructor(
     private invoiceService: InvoiceService,
@@ -70,7 +71,7 @@ export class InvoiceComponent implements OnInit {
       (data: any[]) => {
         this.totalInvoiceList = data['count'];
         this.invoiceList = data['results'];
-        console.log(this.invoiceList)
+        //console.log(this.invoiceList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
         //console.log(this.lower_count)
@@ -80,6 +81,8 @@ export class InvoiceComponent implements OnInit {
         else {
           this.upper_count = this.totalInvoiceList
         }
+        this.invoice_details_key = false;
+        this.Search_invoice_list_key = true;
         this.loading = LoadingState.Ready;
       },
       error => {
@@ -108,10 +111,35 @@ export class InvoiceComponent implements OnInit {
 
   //change customername
   customerNameChange(id){
-    this.invoiceService.getInvoiceByCustomerId(id).subscribe(res => {
-      this.customer_invoice_list = res;
+    //console.log(id);
+    if(id)
+    {
+      this.invoiceService.getInvoiceByCustomerId(id).subscribe(res => {
+        this.customer_invoice_list = res;
+      })
+    }
+    else{
+      this.getInvoiceList();
+    }
+    
+  }
+//
+customerInvoiceChange(id){
+  if(id) 
+  {
+    this.loading = LoadingState.Processing;
+    this.invoiceService.getInvoiceListByPurchaseInvId(id).subscribe(res => {
+      this.invoiceList = res;
+      //console.log(this.invoiceList)
+      this.invoice_details_key = true;
+      this.Search_invoice_list_key = false;
+      this.loading = LoadingState.Ready;
     })
   }
+  else{
+    this.getInvoiceList();
+  }
+}
 
   //selectall
   toggleAll(val)
@@ -119,8 +147,12 @@ export class InvoiceComponent implements OnInit {
     if(val.target.checked){
         this.invoiceList.forEach((invoice) => {
         invoice.checked = true;
+        var d = {
+          cust_id: invoice.customer_details.id,
+          pur_id: invoice.id
+        }
         //console.log("sss"+invoice.customer_details.id);
-        this.selectedCustomer.push(invoice.customer_details.id)
+        this.selectedCustomer.push(d)
       });
     }
     else{
@@ -132,10 +164,14 @@ export class InvoiceComponent implements OnInit {
     }
   }
   //select one by one
-  invoiceCheck(val, invoice) {
+  invoiceCheck(val, invoice,purInvId) {
     if(val.target.checked)
     {
-      this.selectedCustomer.push(invoice);
+      var d = {
+        cust_id: invoice,
+        pur_id: purInvId
+      }
+      this.selectedCustomer.push(d);
     }
     else{
       let index = this.selectedCustomer.indexOf(invoice);
@@ -146,33 +182,34 @@ export class InvoiceComponent implements OnInit {
 
   //click on mail icon
   sendMailByCustomer(e,invoice){
-    console.log(invoice);
+    //console.log(invoice);
   }
   //send mail to all checked
   sendMailByAllInvoice(e)
   {
-    //console.log(this.invoiceList.length);
-    //console.log(this.selectedCustomer);
-    // for (let i in this.selectedCustomer) {
-    //   this.selectedCustomer.push(this.selectedCustomer[i]);
-    // }
-   //console.log(this.selectedCustomer); 
-    this.invoiceService.sendMailByAllInvoice(this.selectedCustomer).subscribe(
-      response => {
-        // console.log(response)
-        this.toastr.success('Send Mail successfully', '', {
+      if(this.selectedCustomer.length>0){
+        this.invoiceService.sendMailByAllInvoice(this.selectedCustomer).subscribe(
+          response => {
+            // console.log(response)
+            this.toastr.success('Send Mail successfully', '', {
+              timeOut: 3000,
+            });
+            this.loading = LoadingState.Ready;
+            //this.goToList('purchase-orders');
+          },
+          error => {
+            this.loading = LoadingState.Ready;
+            this.toastr.error('Something went wrong', '', {
+              timeOut: 3000,
+            });
+          }
+        );
+       }
+       else{
+        this.toastr.error('please check one', '', {
           timeOut: 3000,
         });
-        this.loading = LoadingState.Ready;
-        //this.goToList('purchase-orders');
-      },
-      error => {
-        this.loading = LoadingState.Ready;
-        this.toastr.error('Something went wrong', '', {
-          timeOut: 3000,
-        });
-      }
-    );
+       }
   }
 
   //search data
@@ -184,7 +221,7 @@ export class InvoiceComponent implements OnInit {
     return n < 10 ? "0"+n : n;
   }
   getSearchInvoiceList(){
-    this.Search_requisition_list_key = true;    
+    this.Search_invoice_list_key = true;    
     this.loading = LoadingState.Processing;
     let params: URLSearchParams = new URLSearchParams();
     params.set('page', this.defaultPagination.toString());
@@ -207,7 +244,9 @@ export class InvoiceComponent implements OnInit {
     this.invoiceService.getSearchInvoiceList(params).subscribe(
       (data: any[]) => {
         this.invoiceList = data['results'];
-        console.log(this.invoiceList)
+        //console.log(this.invoiceList)
+        this.invoice_details_key = false;
+        this.Search_invoice_list_key = true;
         this.loading = LoadingState.Ready;
       },
       error => {
