@@ -15,17 +15,16 @@ export class ApprovalInvoiceService {
     return this.http.get(environment.apiEndpoint+'getapprove_invoice/?'+params, {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
-  }
-
-  sendMailByAllInvoiceApproval(data): Observable<any>{
-    //console.log("ss"+data)
-    return this.http.post(environment.apiEndpoint+'invoice_send_mail/', data, {
+  }  
+    
+  getApproveInvoiceListByCustomerId(id): Observable<any>{
+    return this.http.get(environment.apiEndpoint+'all_pending_invoice_dropdown/'+id+'/', {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }
 
-  changeApproveStatusApproveInvoice(data): Observable<any>{
-    return this.http.patch(environment.apiEndpoint+'approve_invoice_status/'+data.id+'/',data, {
+  changeApproveDissapproveStatus(data): Observable<any>{
+    return this.http.post(environment.apiEndpoint+'approve_invoice_status/',data, {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }

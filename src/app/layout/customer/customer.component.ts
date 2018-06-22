@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { LoadingState } from '../../core/component/loading/loading.component';
 import { CustomerService } from '../../core/services/customer.service';
 import { ToastrService } from 'ngx-toastr';
+import * as Globals from '../../core/globals';
 
 @Component({
   selector: 'app-customer',
@@ -28,18 +28,23 @@ export class CustomerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.defaultPagination = 1;
     this.itemNo = 0;
-    this.itemPerPage=10;
+    this.defaultPagination = 1;
+    this.paginationMaxSize = Globals.paginationMaxSize;
+    this.itemPerPage = Globals.itemPerPage;
     this.getCustomerList();
   }
 
   dataSearch() {
-    //console.log('sss');
     this.loading = LoadingState.Processing;
     this.defaultPagination = 1;
     this.getCustomerList();
   }
+
+  pagination() {
+    this.loading = LoadingState.Processing;
+    this.getCustomerList();
+  };
 
   getCustomerList() {
     let params: URLSearchParams = new URLSearchParams();
@@ -54,7 +59,6 @@ export class CustomerComponent implements OnInit {
         //console.log(this.customerList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
-        //console.log(this.lower_count)
         if (this.totalCustomerList > this.itemPerPage * this.defaultPagination) {
           this.upper_count = this.itemPerPage * this.defaultPagination
         }

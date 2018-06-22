@@ -16,16 +16,16 @@
                 <h5>Customers</h5>
               </div>
               <div class="col-md-3">
-                  <form role="form" (ngSubmit)="dataSearch()">
-                      <div class="input-group">
-                          <input type="text" class="form-control" name="search" placeholder="Search" [(ngModel)]="search_key">
-                          <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                              <i class="fa fa-search"></i>
-                            </button>
-                          </div>
-                        </div>
-                  </form>
+                <form role="form" (ngSubmit)="dataSearch()">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search" [(ngModel)]="search_key">
+                    <div class="input-group-append">
+                      <button class="btn btn-secondary" type="submit">
+                        <i class="fa fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -43,7 +43,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let customer of customerList; let i =index">
-                <th scope="row">{{i+1}}</th>
+                <th scope="row">{{itemNo + i + 1}}</th>
                 <td>{{customer.name}}</td>
                 <td>{{customer.address}}</td>
                 <td>{{customer.dob | date:'dd-MM-yyyy'}}</td>
@@ -52,14 +52,20 @@
                 <td>{{customer.alt_contact}}</td>
               </tr>
               <tr *ngIf="customerList.length == 0">
-                  <td colspan="12" class="text-center">No record found</td>
-                </tr>
+                <td colspan="12" class="text-center">No record found</td>
+              </tr>
             </tbody>
           </table>
           <div class="col-md-12">
-              <div class="pagination-msg" *ngIf="totalCustomerList > 0">
-                <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
-              </div>
+            <div class="pagination-msg" *ngIf="totalCustomerList > 0">
+              <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="totalCustomerList > itemPerPage">
+            <div class="pull-right">
+              <ngb-pagination [collectionSize]="totalCustomerList" [maxSize]="paginationMaxSize" [(page)]="defaultPagination" (pageChange)="pagination()"
+                size="sm"></ngb-pagination>
+            </div>
           </div>
         </div>
       </div>

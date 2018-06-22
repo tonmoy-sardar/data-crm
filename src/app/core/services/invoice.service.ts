@@ -17,33 +17,19 @@ export class InvoiceService {
     })
   }
 
-  getInvoiceListByPurchaseInvId(id): Observable<any>{
-    //console.log(environment.apiEndpoint+'all_invoice/'+id+'/');
+  getInvoiceDetailsByPurchaseInvId(id): Observable<any>{
     return this.http.get(environment.apiEndpoint+'all_invoice/'+id+'/', {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }
-
-  getSearchInvoiceList(params): Observable<any>{
-    return this.http.get(environment.apiEndpoint+'search_invoice/?'+params, {
-      headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
-    })
-  }
-
-  getCustomerListtWithoutPagination(): Observable<any>{
-    return this.http.get(environment.apiEndpoint+'customer_dropdown/', {
-      headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
-    })
-  }
-  
-  getInvoiceByCustomerId(id): Observable<any>{
+    
+  getInvoiceListByCustomerId(id): Observable<any>{
     return this.http.get(environment.apiEndpoint+'specific_invoice_dropdown/'+id+'/', {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }
 
   sendMailByAllInvoice(data): Observable<any>{
-    //console.log("ss"+data)
     return this.http.post(environment.apiEndpoint+'admin_send_mail/', data, {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
