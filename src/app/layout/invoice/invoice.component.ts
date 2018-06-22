@@ -24,7 +24,7 @@ export class InvoiceComponent implements OnInit {
   itemNo: number;
 
   selectedAll: any;
-  selectedCustomer: any[];
+  selectedInvoice: any[];
   customerName_list: any[] = [];
   customer_invoice_list: any[] = [];
   customer;
@@ -46,7 +46,7 @@ export class InvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedCustomer = []
+    this.selectedInvoice = []
     this.selectedInv = false;
     this.customer = '';
     this.customerInvoice = '';
@@ -78,7 +78,7 @@ export class InvoiceComponent implements OnInit {
       (data: any[]) => {
         this.totalInvoiceList = data['count'];
         this.invoiceList = data['results'];
-        // console.log(this.invoiceList)
+        console.log(this.invoiceList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
         //console.log(this.lower_count)
@@ -153,46 +153,75 @@ export class InvoiceComponent implements OnInit {
     if (val.target.checked) {
       this.invoiceList.forEach((invoice) => {
         invoice.checked = true;
-        if (invoice.is_approve == '0') {
+        if (invoice.is_approve == 0) {
           var d = {
             cust_id: invoice.customer_details.id,
-            pur_id: invoice.id
+            pur_id: invoice.id,
+            approve : 1
           }
 
         }
-        this.selectedCustomer.push(d)
+        this.selectedInvoice.push(d)
       });
       //console.log("sss"+this.selectedCustomer[0]);
-      //console.log(JSON.parse(JSON.stringify(this.selectedCustomer)))
+      console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
     }
     else {
       this.invoiceList.forEach((invoice) => {
         invoice.checked = false;
-        let index = this.selectedCustomer.indexOf(invoice);
-        this.selectedCustomer.splice(index, 1);
+        let index = this.selectedInvoice.indexOf(invoice);
+        this.selectedInvoice.splice(index, 1);
       });
     }
   }
   //select one by one
-  invoiceCheck(val, invoice, purInvId) {
+  invoiceCheck(val, customer_id, purInvId) {
     if (val.target.checked) {
       var d = {
-        cust_id: invoice,
-        pur_id: purInvId
+        cust_id: customer_id,
+        pur_id: purInvId,
+        approve : 1
       }
-      this.selectedCustomer.push(d);
+      this.selectedInvoice.push(d);
     }
     else {
-      let index = this.selectedCustomer.indexOf(invoice);
-      this.selectedCustomer.splice(index, 1);
+      let index = this.selectedInvoice.indexOf(customer_id);
+      this.selectedInvoice.splice(index, 1);
     }
     // console.log(this.selectedCustomer);
   }
 
   //send mail to all checked
-  sendMailByAllInvoice(e) {
-    if (this.selectedCustomer.length > 0) {
-      this.invoiceService.sendMailByAllInvoice(this.selectedCustomer).subscribe(
+  sendMailByAllInvoice(e, customer_id, purInvId) {
+    if (this.selectedInvoice.length > 0 && purInvId!=null) {
+      console.log("if");
+      this.invoiceService.sendMailByAllInvoice(this.selectedInvoice).subscribe(
+        response => {
+          // console.log(response)
+          this.toastr.success('Send Mail successfully', '', {
+            timeOut: 3000,
+          });
+          this.loading = LoadingState.Ready;
+          //this.goToList('purchase-orders');
+        },
+        error => {
+          this.loading = LoadingState.Ready;
+          this.toastr.error('Something went wrong', '', {
+            timeOut: 3000,
+          });
+        }
+      );
+    }
+    else if(customer_id!=null && purInvId!=null){
+      console.log("if else");
+      var d = {
+        cust_id: customer_id,
+        pur_id: purInvId,
+        approve : 1
+      }
+      console.log(d);
+      this.selectedInvoice.push(d);
+      this.invoiceService.sendMailByAllInvoice(this.selectedInvoice).subscribe(
         response => {
           // console.log(response)
           this.toastr.success('Send Mail successfully', '', {
@@ -210,9 +239,18 @@ export class InvoiceComponent implements OnInit {
       );
     }
     else {
-      this.toastr.error('please check one', '', {
+      if(customer_id==null && purInvId==null){
+        this.toastr.error('Mail already send', '', {
+          timeOut: 3000,
+        });
+      }
+      else{
+        //console.log("else");
+        this.toastr.error('please check one', '', {
         timeOut: 3000,
       });
+      }
+      
     }
   }
 
