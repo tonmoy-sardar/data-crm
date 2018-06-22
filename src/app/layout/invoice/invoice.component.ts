@@ -119,7 +119,6 @@ export class InvoiceComponent implements OnInit {
   //change customername
   customerNameChange(id) {
     //console.log(id);
-
     if (id) {
       this.invoiceService.getInvoiceByCustomerId(id).subscribe(res => {
         this.customer_invoice_list = res;
@@ -218,6 +217,7 @@ export class InvoiceComponent implements OnInit {
 
   //search data
   search() {
+    this.loading = LoadingState.Processing;
     this.getInvoiceList();
   }
 

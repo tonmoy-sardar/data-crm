@@ -120,6 +120,7 @@ export class ApprovalInvoiceComponent implements OnInit {
         this.selectedCustomer[i].approve=appVal;
       }
     }
+    console.log(this.selectedCustomer)
     //console.log("fnl"+this.selectedCustomer[0].pur_id);
     this.approvalInvoiceService.sendMailByAllInvoiceApproval(this.selectedCustomer).subscribe(
       response => {
