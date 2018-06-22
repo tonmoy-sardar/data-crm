@@ -164,7 +164,7 @@ export class InvoiceComponent implements OnInit {
         this.selectedInvoice.push(d)
       });
       //console.log("sss"+this.selectedCustomer[0]);
-      console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
+     // console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
     }
     else {
       this.invoiceList.forEach((invoice) => {
@@ -172,6 +172,7 @@ export class InvoiceComponent implements OnInit {
         let index = this.selectedInvoice.indexOf(invoice);
         this.selectedInvoice.splice(index, 1);
       });
+      //console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
     }
   }
   //select one by one
@@ -183,12 +184,17 @@ export class InvoiceComponent implements OnInit {
         approve : 1
       }
       this.selectedInvoice.push(d);
+      //console.log("singlchek"+this.selectedInvoice);
+      console.log(JSON.parse(JSON.stringify(this.selectedInvoice)));
     }
     else {
       let index = this.selectedInvoice.indexOf(customer_id);
+      console.log(index);
       this.selectedInvoice.splice(index, 1);
+     // console.log(this.selectedInvoice);
+      //console.log("singlunchek"+JSON.parse(JSON.stringify(this.selectedInvoice)));
     }
-    // console.log(this.selectedCustomer);
+     
   }
 
   //send mail to all checked

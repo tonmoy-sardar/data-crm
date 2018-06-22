@@ -21,6 +21,7 @@ export class EmployeeComponent implements OnInit {
   itemNo: number;
   itemPerPage: number;
   loading: LoadingState = LoadingState.NotReady;
+  
 
   constructor(
     private employeesService: EmployeesService,
@@ -73,4 +74,5 @@ export class EmployeeComponent implements OnInit {
     );
   };
 
+ 
 }

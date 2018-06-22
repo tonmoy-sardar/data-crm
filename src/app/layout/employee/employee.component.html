@@ -40,24 +40,28 @@
                   <th>First Name.</th>
                   <th>Last Name.</th>
                   <th>Email</th>
+                  <th>DOB</th>
                   <th>Contact</th>
-                  <th>Company</th>
-                  <th>Department</th>
-                  <th>Designation</th>
+                  <th>Address</th>
+                  <th>state</th>
+                  <th>City</th>
+                  <th>Pin</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr >
-                  <th scope="row"></th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <th scope="row">1</th>
+                  <td>Shashi </td>
+                  <td>Kumar</td>
+                  <td>shashi@gmail.com</td>
+                  <td>20-10-1990</td>
+                  <td>9088856613</td>
+                  <td>Saltalke</td>
+                  <td>West Bengal</td>
+                  <td>kolkata</td>
+                  <td>700091</td>
                   <td>
                     <a href="javascript:void(0);" class="anchor-action" title="Active" name="Active" (click)="inactiveState()" >
                       <i class="fa fa-thumbs-up"></i> Active</a>
@@ -65,17 +69,17 @@
                       <i class="fa fa-thumbs-down"></i> Inactive</a>
                   </td>
                   <td>
-                    <a href="javascript:void(0);" class="anchor-action" title="Edit" name="Edit" >
+                    <a href="javascript:void(0);" class="anchor-action" title="Edit" name="Edit" [routerLink]="['/employee/edit', 1]">
                       <i class="fa fa-edit"></i>
                     </a>&nbsp;&nbsp;&nbsp;
-                    <!-- <a href="javascript:void(0);" title="Map" name="Map" (click)="deleteEmployee(employee.id)">
+                    <a href="javascript:void(0);" title="Map" name="Map" (click)="deleteEmployee(employee.id)">
                     <i class="fa fa-trash-o"></i>
-                  </a> -->
+                  </a>
                   </td>
                 </tr>
-                <tr >
-                  <td colspan="10" class="text-center">No record found</td>
-                </tr>
+                <!-- <tr >
+                  <td colspan="13" class="text-center">No record found</td>
+                </tr> -->
               </tbody>
             </table>
             <div class="col-md-12">
