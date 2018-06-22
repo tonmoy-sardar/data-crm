@@ -8,10 +8,41 @@
     </div>
 
     <hr/>
-
+    <div class="card form-group">
+      <div class="card-header" style="background: #fff;border: none;">
+        <div class="row">
+          <div class="col-md-3">
+            <ng-select class="form-control" placeholder="Select Customer" (change)="customerChange($event)" [clearable]="false" name="customer"
+              [(ngModel)]="customer">
+              <ng-option [value]="0">Select Customer</ng-option>
+              <ng-option *ngFor="let customer of customer_list" [value]="customer.id">{{customer.name}}</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <ng-select class="form-control" placeholder="Select Invoice" [clearable]="false" name="invoice" (change)="invoiceChange($event)">
+              <ng-option [value]="0">Select Invoice</ng-option>
+              <ng-option *ngFor="let invoice of approve_invoice_list" [value]="invoice.id">{{invoice.purchase_inv_no}}</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #f="ngbDatepicker" [(ngModel)]="date">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="f.toggle()" type="button">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 text-right">
+            <button type="submit" class="btn btn-secondary" (click)="dataSearch()">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div class="card" *ngIf="Search_invoice_list_key">
           <div class="card-header">
             <div class="row">
               <div class="col-md-9">
@@ -23,7 +54,7 @@
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" [(ngModel)]="selectedAll" (click)="toggleAll($event)">
+                  <input type="checkbox" [checked]="selectedAll" (click)="toggleAll($event)">
                 </th>
                 <th>Sl.No.</th>
                 <th>Invoice No.</th>
@@ -32,15 +63,13 @@
                 <th>Due Amount</th>
                 <th>Created Date</th>
                 <th>Due Date</th>
-                <th>Mail</th>
-                <th>Paid</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let invoice of approvalInvoiceList ; let i = index">
                 <td width="20px">
-                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id,invoice.id)">
+                  <input type="checkbox" [checked]="invoice.checked" (change)="invoiceCheck($event,invoice.customer_details.id,invoice.id,invoice)">
                 </td>
                 <td>{{i +1}}</td>
                 <td>{{invoice.purchase_inv_no}}</td>
@@ -48,21 +77,10 @@
                 <td>{{invoice.customer_details.address}}</td>
                 <td>{{invoice.due_amount}}</td>
                 <td>{{invoice.created_at | date:'dd-MM-yyyy'}}</td>
-                <td>{{invoice.due_date | date:'dd-MM-yyyy'}}</td>
+                <td>{{invoice.due_date | date:'dd-MM-yyyy'}}</td>                
                 <td>
-                  <label *ngIf="invoice.mail_status==false">Unmailed</label>
-                  <label *ngIf="invoice.mail_status==true">Mailed</label>
-                </td>
-                <td>
-                  <label *ngIf="invoice.paid_status==false">Unpaid</label>
-                  <label *ngIf="invoice.paid_status==true">paid</label>
-                </td>
-                <td>
-                  <label *ngIf="invoice.is_approve == 0" style="display: inline;">None</label>
                   <label *ngIf="invoice.is_approve == 1" style="display: inline;">Pending</label>
-                  <label *ngIf="invoice.is_approve == 2" style="display: inline;">Approved</label>
-                  <label *ngIf="invoice.is_approve == 3" style="display: inline;">Rejected</label>
-                  <select class="form-control" style="display: inline-flex; width: 81%;" name="is_approve" (change)="changeApproveStatus($event.target.value,invoice.customer_details.id)">
+                  <select class="form-control" style="display: inline-flex; width: 75%;" name="is_approve" (change)="changeStatus($event.target.value,invoice.customer_details.id,invoice.id)">
                     <option value='0'>Change Approve</option>
                     <option value='2'>Approve</option>
                     <option value='3'>Dis-Approve</option>
@@ -75,19 +93,57 @@
             </tbody>
           </table>
           <div class="col-md-12 text-right" style="margin-bottom: 15px;">
-            <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'2')">Approve</button>
-            <button type="submit" class="btn btn-primary" (click)="sendMailByAllInvoiceApproval($event,'3')">Reject</button>
+            <button type="submit" class="btn btn-primary" (click)="bulk_approve()">Approve</button>
+            <button type="submit" class="btn btn-primary" (click)="bulk_reject()">Reject</button>
           </div>
-
-          <div class="col-md-12">
-            <div class="pagination-msg" *ngIf="totalInvoiceList > 0">
-              <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card-body pagination-msg" *ngIf="totalApprovalInvoiceList > 0">
+                <p>Showing {{lower_count}} to {{upper_count}} of {{totalCustomerList}} entries</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card-body pull-right" *ngIf="totalApprovalInvoiceList > itemPerPage">
+                <ngb-pagination [collectionSize]="totalApprovalInvoiceList" [maxSize]="paginationMaxSize" [(page)]="defaultPagination" (pageChange)="pagination()"
+                  size="sm"></ngb-pagination>
+              </div>
             </div>
           </div>
         </div>
 
       </div>
-
+      <div class="col-md-12">
+        <div class="card" *ngIf="invoice_details_key">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>Invoice Number :{{approve_invoice_details.purchase_inv_no}} </h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="card-body table table-hover table-sm table-bordered">
+                  <tbody>
+                    <tr>
+                      <td>Customer Name :{{approve_invoice_details.customer_details.name}}</td>
+                      <td>Customer Addrerss :{{approve_invoice_details.customer_details.address}}</td>
+                      <td>Due Amount : {{approve_invoice_details.due_amount}}</td>
+                      <td>created_at:{{approve_invoice_details.created_at | date:'dd-MM-yyyy' }}</td>
+                      <td>Due Date :{{approve_invoice_details.due_date | date:'dd-MM-yyyy'}}</td>
+                      <td *ngIf="approve_invoice_details.is_approve != 0">
+                        <button type="submit" class="btn btn-primary" (click)="approve(approve_invoice_details.customer_details.id,approve_invoice_details.id)">Approve</button>
+                        <button type="submit" class="btn btn-primary" (click)="reject(approve_invoice_details.customer_details.id,approve_invoice_details.id)">Reject</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>

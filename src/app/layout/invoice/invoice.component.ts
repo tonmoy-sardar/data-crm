@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-//import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
-
 import { LoadingState } from '../../core/component/loading/loading.component';
 import { InvoiceService } from '../../core/services/invoice.service';
+import { CustomerService } from '../../core/services/customer.service';
 import { ToastrService } from 'ngx-toastr';
-
+import * as Globals from '../../core/globals';
 
 @Component({
   selector: 'app-invoice',
@@ -13,50 +12,40 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./invoice.component.scss']
 })
 export class InvoiceComponent implements OnInit {
-  //form: FormGroup;
   loading: LoadingState = LoadingState.NotReady;
   totalInvoiceList: number;
-  invoiceList = [];
+  invoiceList: any = [];
+  invoice_details: any;
   lower_count: number;
   upper_count: number;
+  defaultPagination: number;
   paginationMaxSize: number;
   itemPerPage: number;
   itemNo: number;
-
-  selectedAll: any;
-  selectedInvoice: any[];
-  customerName_list: any[] = [];
-  customer_invoice_list: any[] = [];
-  customer;
-  customerInvoice;
-  status;
+  selectedAll: boolean;
+  selectedInvoice: any = [];
+  customer_list: any = [];
+  invoice_list: any = [];
+  customer = 0;
+  status = '';
   date: any;
-  defaultPagination: number;
-  selectedInv;
-  customerIdForMail: any[] = [];
   invoice_details_key: boolean;
   Search_invoice_list_key: boolean;
 
   constructor(
     private invoiceService: InvoiceService,
     private router: Router,
-    private toastr: ToastrService
-    //private formBuilder: FormBuilder
-
+    private toastr: ToastrService,
+    private customerService: CustomerService
   ) { }
 
   ngOnInit() {
-    this.selectedInvoice = []
-    this.selectedInv = false;
-    this.customer = '';
-    this.customerInvoice = '';
-    this.status = '';
-    this.defaultPagination = 1;
     this.itemNo = 0;
-    this.itemPerPage = 10;
+    this.defaultPagination = 1;
+    this.paginationMaxSize = Globals.paginationMaxSize;
+    this.itemPerPage = Globals.itemPerPage;
     this.getInvoiceList();
     this.getCustomerList();
-
   }
 
 
@@ -66,7 +55,6 @@ export class InvoiceComponent implements OnInit {
     if (this.customer > 0) {
       params.set('customer_id', this.customer.toString());
     }
-    
     if (this.status != "") {
       params.set('status', this.status.toString());
     }
@@ -78,10 +66,9 @@ export class InvoiceComponent implements OnInit {
       (data: any[]) => {
         this.totalInvoiceList = data['count'];
         this.invoiceList = data['results'];
-        console.log(this.invoiceList)
+        // console.log(this.invoiceList)
         this.itemNo = (this.defaultPagination - 1) * this.itemPerPage;
         this.lower_count = this.itemNo + 1;
-        //console.log(this.lower_count)
         if (this.totalInvoiceList > this.itemPerPage * this.defaultPagination) {
           this.upper_count = this.itemPerPage * this.defaultPagination
         }
@@ -90,6 +77,8 @@ export class InvoiceComponent implements OnInit {
         }
         this.invoice_details_key = false;
         this.Search_invoice_list_key = true;
+        this.selectedAll = false;
+        this.selectedInvoice = [];
         this.loading = LoadingState.Ready;
       },
       error => {
@@ -102,10 +91,8 @@ export class InvoiceComponent implements OnInit {
   };
 
   getCustomerList() {
-    //console.log(sss);
-    this.invoiceService.getCustomerListtWithoutPagination().subscribe(res => {
-      this.customerName_list = res;
-      //console.log(this.customerName_list);
+    this.customerService.getCustomerListtWithoutPagination().subscribe(res => {
+      this.customer_list = res;
       this.loading = LoadingState.Ready;
     },
       error => {
@@ -116,28 +103,27 @@ export class InvoiceComponent implements OnInit {
       })
   }
 
-  //change customername
-  customerNameChange(id) {
-    //console.log(id);
-
-    if (id) {
-      this.invoiceService.getInvoiceByCustomerId(id).subscribe(res => {
-        this.customer_invoice_list = res;
+  customerChange(id) {
+    this.loading = LoadingState.Processing;
+    if (id > 0) {
+      this.invoice_list = [];
+      this.invoiceService.getInvoiceListByCustomerId(id).subscribe(res => {
+        this.invoice_list = res;
+        this.loading = LoadingState.Ready;
       })
     }
     else {
-      this.customer_invoice_list = [];
-      this.getInvoiceList();      
+      this.invoice_list = [];
+      this.getInvoiceList();
     }
 
   }
-  //
-  customerInvoiceChange(id) {
-    if (id) {
+
+  invoiceChange(id) {
+    if (id > 0) {
       this.loading = LoadingState.Processing;
-      this.invoiceService.getInvoiceListByPurchaseInvId(id).subscribe(res => {
-        this.invoiceList = res;
-        //console.log(this.invoiceList)
+      this.invoiceService.getInvoiceDetailsByPurchaseInvId(id).subscribe(res => {
+        this.invoice_details = res;
         this.invoice_details_key = true;
         this.Search_invoice_list_key = false;
         this.loading = LoadingState.Ready;
@@ -148,126 +134,125 @@ export class InvoiceComponent implements OnInit {
     }
   }
 
-  //selectall
   toggleAll(val) {
     if (val.target.checked) {
+      this.selectedAll = true
       this.invoiceList.forEach((invoice) => {
-        invoice.checked = true;
         if (invoice.is_approve == 0) {
+          if (invoice.checked == false || invoice.checked == undefined) {
+            invoice.checked = true;
+          }
           var d = {
             cust_id: invoice.customer_details.id,
             pur_id: invoice.id,
-            approve : 1
+            approve: 1
           }
-
+          var Mindex = this.selectedInvoice.findIndex(p => p.pur_id == invoice.id)
+          if (Mindex == -1) {
+            this.selectedInvoice.push(d)
+          }
         }
-        this.selectedInvoice.push(d)
       });
-      //console.log("sss"+this.selectedCustomer[0]);
-     // console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
     }
     else {
+      this.selectedAll = false
       this.invoiceList.forEach((invoice) => {
         invoice.checked = false;
-        let index = this.selectedInvoice.indexOf(invoice);
-        this.selectedInvoice.splice(index, 1);
+        var Mindex = this.selectedInvoice.findIndex(p => p.pur_id == invoice.id)
+        if (Mindex != -1) {
+          this.selectedInvoice.splice(Mindex, 1);
+        }
       });
       //console.log(JSON.parse(JSON.stringify(this.selectedInvoice)))
     }
   }
-  //select one by one
-  invoiceCheck(val, customer_id, purInvId) {
+
+  invoiceCheck(val, customer_id, invoice_id, invoice) {
     if (val.target.checked) {
+      if (invoice.checked == false || invoice.checked == undefined) {
+        invoice.checked = true;
+      }
       var d = {
         cust_id: customer_id,
-        pur_id: purInvId,
-        approve : 1
+        pur_id: invoice_id,
+        approve: 1
       }
-      this.selectedInvoice.push(d);
-      //console.log("singlchek"+this.selectedInvoice);
-      console.log(JSON.parse(JSON.stringify(this.selectedInvoice)));
+      var Mindex = this.selectedInvoice.findIndex(p => p.pur_id == invoice_id)
+      if (Mindex == -1) {
+        this.selectedInvoice.push(d);
+      }
+      var filterList = []
+      filterList = this.invoiceList.filter(x => x.is_approve == 0)
+      if (filterList.length == this.selectedInvoice.length) {
+        this.selectedAll = true
+      }
     }
     else {
-      let index = this.selectedInvoice.indexOf(customer_id);
-      console.log(index);
-      this.selectedInvoice.splice(index, 1);
-     // console.log(this.selectedInvoice);
-      //console.log("singlunchek"+JSON.parse(JSON.stringify(this.selectedInvoice)));
+      invoice.checked = false;
+      var Mindex = this.selectedInvoice.findIndex(p => p.pur_id == invoice_id)
+      if (Mindex != -1) {
+        this.selectedInvoice.splice(Mindex, 1);
+        this.selectedAll = false
+      }
     }
-     
   }
 
-  //send mail to all checked
-  sendMailByAllInvoice(e, customer_id, purInvId) {
-    if (this.selectedInvoice.length > 0 && purInvId!=null) {
-      console.log("if");
-      this.invoiceService.sendMailByAllInvoice(this.selectedInvoice).subscribe(
-        response => {
-          // console.log(response)
-          this.toastr.success('Send Mail successfully', '', {
-            timeOut: 3000,
-          });
-          this.loading = LoadingState.Ready;
-          //this.goToList('purchase-orders');
-        },
-        error => {
-          this.loading = LoadingState.Ready;
-          this.toastr.error('Something went wrong', '', {
-            timeOut: 3000,
-          });
-        }
-      );
-    }
-    else if(customer_id!=null && purInvId!=null){
-      console.log("if else");
-      var d = {
+  sendMail(customer_id, invoice_id) {
+    this.loading = LoadingState.Processing;
+    var data = [
+      {
         cust_id: customer_id,
-        pur_id: purInvId,
-        approve : 1
+        pur_id: invoice_id,
+        approve: 1
       }
-      console.log(d);
-      this.selectedInvoice.push(d);
-      this.invoiceService.sendMailByAllInvoice(this.selectedInvoice).subscribe(
-        response => {
-          // console.log(response)
-          this.toastr.success('Send Mail successfully', '', {
-            timeOut: 3000,
-          });
-          this.loading = LoadingState.Ready;
-          //this.goToList('purchase-orders');
-        },
-        error => {
-          this.loading = LoadingState.Ready;
-          this.toastr.error('Something went wrong', '', {
-            timeOut: 3000,
-          });
-        }
-      );
+    ]
+    this.mailToAdmin(data)
+  }
+
+  bulkMailSend() {
+    this.loading = LoadingState.Processing
+    if (this.selectedInvoice.length == 0) {
+      this.loading = LoadingState.Ready
+      this.toastr.error('please check at least one', '', {
+        timeOut: 3000,
+      });
     }
     else {
-      if(customer_id==null && purInvId==null){
-        this.toastr.error('Mail already send', '', {
+      this.mailToAdmin(this.selectedInvoice)
+    }
+  }
+
+  mailToAdmin(data) {
+    this.invoiceService.sendMailByAllInvoice(data).subscribe(
+      response => {
+        this.toastr.success('Approval request sent successfully', '', {
+          timeOut: 3000,
+        });
+        this.getInvoiceList();
+      },
+      error => {
+        this.loading = LoadingState.Ready;
+        this.toastr.error('Something went wrong', '', {
           timeOut: 3000,
         });
       }
-      else{
-        //console.log("else");
-        this.toastr.error('please check one', '', {
-        timeOut: 3000,
-      });
-      }
-      
-    }
+    );
   }
 
-  //search data
-  search() {
+  dataSearch() {
+    this.defaultPagination = 1;
+    this.loading = LoadingState.Processing;
     this.getInvoiceList();
   }
+
+  pagination() {
+    this.loading = LoadingState.Processing;
+    this.getInvoiceList();
+  };
 
   dConvert(n) {
     return n < 10 ? "0" + n : n;
   }
-  
+
 
 }

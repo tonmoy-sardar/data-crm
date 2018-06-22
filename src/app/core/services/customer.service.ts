@@ -17,4 +17,11 @@ export class CustomerService {
       headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
     })
   }
+
+  getCustomerListtWithoutPagination(): Observable<any>{
+    return this.http.get(environment.apiEndpoint+'customer_dropdown/', {
+      headers: new HttpHeaders().set('Authorization', 'Token '+localStorage.getItem('logedUserToken'))
+    })
+  }
+
 }
