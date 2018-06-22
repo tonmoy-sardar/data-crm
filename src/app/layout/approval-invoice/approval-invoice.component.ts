@@ -24,7 +24,7 @@ export class ApprovalInvoiceComponent implements OnInit {
   defaultPagination: number;
   status :'';
   selectedAll: any;
-  selectedCustomer : any[];
+  selectedInvoice : any[];
   constructor(
     private approvalInvoiceService: ApprovalInvoiceService,
     private router: Router,
@@ -32,7 +32,7 @@ export class ApprovalInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedCustomer = []
+    this.selectedInvoice = []
     this.status ='';
     this.defaultPagination = 1;
     this.itemNo = 0;
@@ -79,50 +79,50 @@ export class ApprovalInvoiceComponent implements OnInit {
         invoice.checked = true;
         var d = {
           cust_id: invoice.customer_details.id,
-          pur_id: invoice.id
+          pur_id: invoice.id,
+          approve :0
         }
-        this.selectedCustomer.push(d)
+        this.selectedInvoice.push(d)
       });
-      
-    }
-    else{
+    } else{
         this.approvalInvoiceList.forEach((invoice) => {
         invoice.checked = false;
-        let index = this.selectedCustomer.indexOf(invoice);
-        this.selectedCustomer.splice(index, 1);
+        let index = this.selectedInvoice.indexOf(invoice);
+        this.selectedInvoice.splice(index, 1);
       });
     }
-    console.log(this.selectedCustomer);
+    //console.log(this.selectedInvoice);
   }
   //select one by one
   invoiceCheck(val, invoice,purInvId) {
+    
     if(val.target.checked)
     {
       var d = {
         cust_id: invoice,
         pur_id: purInvId,
-        approve :''
+        approve : 0
       }
-      this.selectedCustomer.push(d);
-      
+      this.selectedInvoice.push(d);
     }
     else{
-      let index = this.selectedCustomer.indexOf(invoice);
-      this.selectedCustomer.splice(index, 1);
+      let index = this.selectedInvoice.indexOf(invoice);
+      this.selectedInvoice.splice(index, 1);
+      console.log(this.selectedInvoice);
     }
   }
 
   sendMailByAllInvoiceApproval(e,appVal){
-  if(this.selectedCustomer.length>0){
-    for (let i = 0; i < this.selectedCustomer.length ; i++) {
-      if(this.selectedCustomer[i].approve==undefined)
+  if(this.selectedInvoice.length>0){
+    for (let i = 0; i < this.selectedInvoice.length ; i++) {
+      if(this.selectedInvoice[i].approve==undefined)
       {
-        this.selectedCustomer[i].approve=appVal;
+        this.selectedInvoice[i].approve=appVal;
       }
     }
     console.log(this.selectedCustomer)
     //console.log("fnl"+this.selectedCustomer[0].pur_id);
-    this.approvalInvoiceService.sendMailByAllInvoiceApproval(this.selectedCustomer).subscribe(
+    this.approvalInvoiceService.sendMailByAllInvoiceApproval(this.selectedInvoice).subscribe(
       response => {
         // console.log(response)
         this.toastr.success('Send Mail successfully', '', {

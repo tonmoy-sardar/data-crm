@@ -103,7 +103,7 @@
                 </td>
                 <td>
                   <a href="javascript:void(0);" class="anchor-action" title="approval request" name="approval request" *ngIf="invoice.is_approve==0"
-                    (click)="sendMailByAllInvoice($event,invoice.customer_details.id)">
+                    (click)="sendMailByAllInvoice($event,invoice.customer_details.id,invoice.id)">
                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                   </a>
                 </td>
