@@ -53,6 +53,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('logedUserUserId');
     localStorage.removeItem('logedUserUserName');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('approvalSet');
     this.permissionsService.flushPermissions();
   }
 

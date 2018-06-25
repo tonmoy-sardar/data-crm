@@ -53,12 +53,12 @@ export class ApprovalInvoiceComponent implements OnInit {
 
   getApproveInvoiceList() {
     let params: URLSearchParams = new URLSearchParams();
-    params.set('page', this.defaultPagination.toString());
+    params.set('page', this.defaultPagination.toString());    
     if(this.set_id != null){
-      params.set('set_id', this.customer.toString());
+      params.set('set_id', this.set_id.toString());
     }
     if (this.customer > 0) {
-      params.set('customer_id', this.set_id.toString());
+      params.set('customer_id', this.customer.toString());
     }
     if (this.date != undefined) {
       var frDate = new Date(this.date.year, this.date.month - 1, this.date.day)
