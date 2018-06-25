@@ -33,7 +33,7 @@
 
 .main-body .login-page .login-form {
     // background: #499bea;
-    background: #1b657e;
+    background: #fff;
     padding: 20px;
     border-radius: 8px;
     margin-top: 12%;
@@ -225,7 +225,8 @@
 
 .card {
     -webkit-box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.11);
-    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.11)
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.11);
+    padding: 1px 7px;
 }
 
 .btn-secondary {
@@ -259,4 +260,18 @@
     color: #fff;
     background-color: #1b657e;
     border-color: #1b657e;
+}
+
+.table-sm td {
+    padding: 0px 4px;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 13px;
+}
+
+.table-sm th {
+    padding: 4px;
+    vertical-align: middle;
+    text-align: center;
+    background: #ececec;
 }
