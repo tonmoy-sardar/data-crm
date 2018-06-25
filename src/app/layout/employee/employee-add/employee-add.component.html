@@ -1,134 +1,124 @@
 <loading [state]="loading">
+  <div>
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="page-header">Employee Add</h4>
+      </div>
+      <div class="col-md-6 pull-right" style="text-align: right">
+
+        <button type="button" class="btn btn-primary" (click)="btnClickNav('employees')">
+          <i class="fa fa-arrow-left"></i> Back</button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <hr/>
     <div>
       <div class="row">
-        <div class="col-md-6">
-          <h4 class="page-header">Employee Add</h4>
-        </div>
-        <div class="col-md-6 pull-right" style="text-align: right">
-        
-          <button type="button" class="btn btn-primary" (click)="btnClickNav('employee')">
-            <i class="fa fa-arrow-left"></i> Back</button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <hr/>
-      <div>
-        <div class="row">
-          <div class="col-md-12">
-            <form role="form" [formGroup]="form" novalidate>
-              <div class="card bg-light mb-3">
-                <div class="card-header" style="background-color:#868e96; color: #fff;">Employee Add</div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label>First Name</label>
-                      <input type="text" class="form-control" name="first_name" placeholder="First Name" formControlName="first_name" [ngClass]="displayFieldCss('first_name')">
-                      <div class="invalid-feedback" *ngIf="form.controls['first_name'].hasError('required')">
-                        Please enter first Name
-                      </div>
+        <div class="col-md-12">
+          <form role="form" [formGroup]="form" novalidate>
+            <div class="card bg-light mb-3">
+              <div class="card-header" style="background-color:#868e96; color: #fff;">Employee Add</div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" placeholder="First Name" formControlName="first_name" [ngClass]="displayFieldCss('first_name')">
+                    <div class="invalid-feedback" *ngIf="form.controls['first_name'].hasError('required')">
+                      Please enter first Name
                     </div>
-                    <div class="form-group col-md-4">
-                      <label>Last Name</label>
-                      <input type="text" class="form-control" name="last_name" placeholder="Last Name" formControlName="last_name" [ngClass]="displayFieldCss('last_name')">
-                      <div class="invalid-feedback" *ngIf="form.controls['last_name'].hasError('required')">
-                        Please enter last Name
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label>Email</label>
-                      <input type="email" class="form-control" name="email" placeholder="Email" formControlName="email" [ngClass]="displayFieldCss('email')">
-                      <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('pattern') && !form.controls['email'].hasError('required')">
-                        Please enter a valid email address
-                      </div>
-                      <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('required')">
-                        Email is required
-                      </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label>Contact No.</label>
-                      <input type="text" appOnlyNumber class="form-control" name="contact" placeholder="Contact No." formControlName="contact"
-                        [ngClass]="displayFieldCss('contact')">
-                      <div class="invalid-feedback" *ngIf="form.controls['contact'].hasError('minlength') && !form.controls['contact'].hasError('required')">
-                        Please enter at least 10 digit
-                      </div>
-                      <div class="invalid-feedback" *ngIf="form.controls['contact'].hasError('maxlength') && !form.controls['contact'].hasError('required')">
-                        Phone number should be less then 13 digit
-                      </div>
-                      <div class="invalid-feedback" *ngIf="form.controls['contact'].hasError('required')">
-                        Please enter phone
-                      </div>
-                    </div>
-                    
-                    
-                    
-                    <div class="form-group col-md-4">
-                      <label>DOB</label>
-                    <div class="input-group">
-                      <input class="form-control" placeholder="yyyy-mm-dd" name="dob" ngbDatepicker #d="ngbDatepicker" formControlName="dob" [ngClass]="displayFieldCss('dob')">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                          <i class="fa fa-calendar" aria-hidden="true"></i>
-                        </button>
-                      </div>
-                      <div class="invalid-feedback" *ngIf="form.controls['dob'].hasError('required')">
-                        Please enter DOB
-                      </div>
-                    </div>
-                    </div>
-                    <!-- <div class="form-group col-md-4">
-                      <label>AADHAAR Number</label>
-                      <input type="text" class="form-control" name="adhaar_no" placeholder="AADHAAR Number" formControlName="adhaar_no" [ngClass]="displayFieldCss('adhaar_no')">
-                      <div class="invalid-feedback" *ngIf="form.controls['adhaar_no'].hasError('required')">
-                        Please enter AADHAAR
-                      </div>
-                    </div> -->
                   </div>
-                  <div class="card bg-light mb-3">
-                    <div class="card-header">Employee present address</div>
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="form-group col-md-4">
-                          <label>Address</label>
-                          <textarea class="form-control" rows="1" placeholder="Address" name="emp_present_address" formControlName="emp_present_address"
-                            [ngClass]="displayFieldCss('emp_present_address')"></textarea>
-                          <div class="invalid-feedback" *ngIf="form.controls['emp_present_address'].hasError('required')">
-                            Please enter address
+                  <div class="form-group col-md-4">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" formControlName="last_name" [ngClass]="displayFieldCss('last_name')">
+                    <div class="invalid-feedback" *ngIf="form.controls['last_name'].hasError('required')">
+                      Please enter last Name
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Email" formControlName="email" [ngClass]="displayFieldCss('email')">
+                    <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('pattern') && !form.controls['email'].hasError('required')">
+                      Please enter a valid email address
+                    </div>
+                    <div class="invalid-feedback" *ngIf="form.controls['email'].hasError('required')">
+                      Email is required
+                    </div>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <div class="row" formArrayName="employee_profile" *ngFor="let employeeProfile of getEmployeeProfile(form); let i = index;">
+                      <div [formGroupName]="i" class="col-md-12">
+                        <div class="row">
+                          <div class="form-group col-md-3">
+                            <label>Contact No.</label>
+                            <input type="text" appOnlyNumber class="form-control" name="contact_no" placeholder="Contact No." formControlName="contact_no"
+                              [ngClass]="{
+                                  'is-invalid': employeeProfile.get('contact_no').invalid && (employeeProfile.get('contact_no').dirty || employeeProfile.get('contact_no').touched),
+                                  'is-valid': employeeProfile.get('contact_no').valid && (employeeProfile.get('contact_no').dirty || employeeProfile.get('contact_no').touched)
+                                }">
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('contact_no').hasError('minlength') && !employeeProfile.get('contact_no').hasError('required')">
+                              Please enter at least 10 digit
+                            </div>
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('contact_no').hasError('maxlength') && !employeeProfile.get('contact_no').hasError('required')">
+                              Phone number should be less then 13 digit
+                            </div>
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('contact_no').hasError('required')">
+                              Please enter phone
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group col-md-3">
-                          <label>State</label>
-                          <input class="form-control" placeholder="State" name="emp_present_state" formControlName="emp_present_state" [ngClass]="displayFieldCss('emp_present_state')">
-                          <div class="invalid-feedback" *ngIf="form.controls['emp_present_state'].hasError('required')">
-                            Please enter state
+                          <div class="form-group col-md-3">
+                            <label>State</label>
+                            <input class="form-control" placeholder="State" name="state" formControlName="state" [ngClass]="{
+                                  'is-invalid': employeeProfile.get('state').invalid && (employeeProfile.get('state').dirty || employeeProfile.get('state').touched),
+                                  'is-valid': employeeProfile.get('state').valid && (employeeProfile.get('state').dirty || employeeProfile.get('state').touched)
+                                }">
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('state').hasError('required')">
+                              Please enter State
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group col-md-3">
-                          <label>City</label>
-                          <input class="form-control" placeholder="City" name="emp_present_city" formControlName="emp_present_city" [ngClass]="displayFieldCss('emp_present_city')">
-                          <div class="invalid-feedback" *ngIf="form.controls['emp_present_city'].hasError('required')">
-                            Please enter city
+                          <div class="form-group col-md-3">
+                            <label>City</label>
+                            <input class="form-control" placeholder="City" name="city" formControlName="city" [ngClass]="{
+                                'is-invalid': employeeProfile.get('city').invalid && (employeeProfile.get('city').dirty || employeeProfile.get('city').touched),
+                                'is-valid': employeeProfile.get('city').valid && (employeeProfile.get('city').dirty || employeeProfile.get('city').touched)
+                              }">
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('city').hasError('required')">
+                              Please enter city
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-group col-md-2">
-                          <label>Pin</label>
-                          <input class="form-control" placeholder="Pin" name="emp_present_pin" formControlName="emp_present_pin" [ngClass]="displayFieldCss('emp_present_pin')">
-                          <div class="invalid-feedback" *ngIf="form.controls['emp_present_pin'].hasError('required')">
-                            Please enter pincode
+                          <div class="form-group col-md-3">
+                            <label>Pin</label>
+                            <input class="form-control" placeholder="Pin" name="pin_code" formControlName="pin_code" [ngClass]="{
+                                'is-invalid': employeeProfile.get('pin_code').invalid && (employeeProfile.get('pin_code').dirty || employeeProfile.get('pin_code').touched),
+                                'is-valid': employeeProfile.get('pin_code').valid && (employeeProfile.get('pin_code').dirty || employeeProfile.get('pin_code').touched)
+                              }">
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('pin_code').hasError('required')">
+                              Please enter pincode
+                            </div>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <label>Address</label>
+                            <textarea class="form-control" rows="1" placeholder="Address" name="address" formControlName="address" [ngClass]="{
+                                'is-invalid': employeeProfile.get('address').invalid && (employeeProfile.get('address').dirty || employeeProfile.get('address').touched),
+                                'is-valid': employeeProfile.get('address').valid && (employeeProfile.get('address').dirty || employeeProfile.get('address').touched)
+                              }"></textarea>
+                            <div class="invalid-feedback" *ngIf="employeeProfile.get('address').hasError('required')">
+                              Please enter address
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group col-md-12" style="text-align: right">
-                    <button type="submit" class="btn btn-primary" (click)="addEmployee()">Submit</button>
-                    <button type="reset" class="btn btn-secondary" (click)="reSet()">Reset</button>
-                  </div>
-                  
+                </div>
+                <div class="form-group col-md-12" style="text-align: right">
+                  <button type="submit" class="btn btn-primary" (click)="addEmployee()">Submit</button>
+                  <button type="reset" class="btn btn-secondary" (click)="reSet()">Reset</button>
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </loading>
+  </div>
+</loading>

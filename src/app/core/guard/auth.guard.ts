@@ -3,19 +3,20 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angul
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
-
+import { NgxPermissionsService } from 'ngx-permissions';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
   constructor(
     private router: Router,
     private loginService: LoginService,
+    private permissionsService: NgxPermissionsService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
 
     var query_token = route.queryParams.token;
-    
+
     if (localStorage.getItem('isLoggedin')) {
       return Observable.of(true);
     }
@@ -32,6 +33,13 @@ export class AuthGuard implements CanActivate {
           localStorage.setItem('logedUserUserId', response.user_id);
           localStorage.setItem('logedUserUserName', response.username);
           localStorage.setItem('userRole', response.user_role);
+          this.permissionsService.flushPermissions();
+          const perm = []
+          perm.push(localStorage.getItem('userRole'))
+          this.permissionsService.addPermission(perm)
+          this.permissionsService.loadPermissions(perm, (permissionName, permissionStore) => {
+            return !!permissionStore[permissionName];
+          })
           this.router.navigate(['/approval-invoice']);
           return Observable.of(false);
         },
@@ -41,7 +49,7 @@ export class AuthGuard implements CanActivate {
         }
       )
     }
-    
+
     this.router.navigate(['/login']);
     return Observable.of(false);
   }

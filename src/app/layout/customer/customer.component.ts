@@ -15,12 +15,15 @@ export class CustomerComponent implements OnInit {
   defaultPagination: number;
   totalCustomerList: number;
   search_key = '';
+  sort_by = '';
+  sort_type = '';
   lower_count: number;
   upper_count: number;
   paginationMaxSize: number;
   itemPerPage: number;
   itemNo: number;
   loading: LoadingState = LoadingState.NotReady;
+  headerThOption = [];
   constructor(
     private customerService: CustomerService,
     private router: Router,
@@ -28,6 +31,38 @@ export class CustomerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.headerThOption = [
+      {
+        name: "Customer Name",
+        code: "name",
+        sort_type: ''
+      },
+      {
+        name: "Address",
+        code: "address",
+        sort_type: ''
+      },
+      {
+        name: "DOB",
+        code: "dob",
+        sort_type: ''
+      },
+      {
+        name: "Email",
+        code: "email",
+        sort_type: ''
+      },
+      {
+        name: "Contact",
+        code: "contact",
+        sort_type: ''
+      },
+      {
+        name: "Alt Contact",
+        code: "alt_contact",
+        sort_type: ''
+      }
+    ];
     this.itemNo = 0;
     this.defaultPagination = 1;
     this.paginationMaxSize = Globals.paginationMaxSize;
@@ -45,12 +80,42 @@ export class CustomerComponent implements OnInit {
     this.loading = LoadingState.Processing;
     this.getCustomerList();
   };
+  sortTable(value) {
+    let type = '';
+    this.headerThOption.forEach(function (optionValue) {
+      if (optionValue.code == value) {
+        if (optionValue.sort_type == 'desc') {
+          type = 'asc';
+        }
+        else {
+          type = 'desc';
+        }
+        optionValue.sort_type = type;
+      }
+      else {
+        optionValue.sort_type = '';
+      }
+    });
+
+    this.sort_by = value;
+    this.sort_type = type;
+    this.loading = LoadingState.Processing;
+    this.defaultPagination = 1;
+    this.getCustomerList();
+  };
 
   getCustomerList() {
     let params: URLSearchParams = new URLSearchParams();
     params.set('page', this.defaultPagination.toString());
     if (this.search_key != '') {
       params.set('search', this.search_key.toString());
+    }
+    if (this.sort_by != '') {
+      params.set('field_name', this.sort_by.toString());
+    }
+
+    if (this.sort_type != '') {
+      params.set('order_by', this.sort_type.toString());
     }
     this.customerService.getCustomerList(params).subscribe(
       (data: any[]) => {

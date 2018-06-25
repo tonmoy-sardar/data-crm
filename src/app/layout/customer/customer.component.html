@@ -33,12 +33,13 @@
             <thead>
               <tr>
                 <th>Sl.No.</th>
-                <th>Customer Name</th>
-                <th>Address</th>
-                <th>DOB</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Alt Contact</th>
+                <th *ngFor="let headerTh of headerThOption ; let i = index" (click)="sortTable(headerTh.code)" class="custom-table-head">{{headerTh.name}}
+                  <span class="pull-right">
+                    <i class="fa fa-chevron-up inactive-color" [ngClass]="{'active-color':headerTh.sort_type=='asc'}"></i>
+                    <i class="fa fa-chevron-down inactive-color" [ngClass]="{'active-color':headerTh.sort_type=='desc'}"></i>
+                  </span>
+                </th>
+                <!-- <th>Action</th> -->
               </tr>
             </thead>
             <tbody>
@@ -50,6 +51,11 @@
                 <td>{{customer.email}}</td>
                 <td>{{customer.contact}}</td>
                 <td>{{customer.alt_contact}}</td>
+                <!-- <td>
+                  <a href="javascript:void(0);" class="anchor-action" title="Edit" name="Edit" [routerLink]="['.']">
+                    <i class="fa fa-edit"></i>
+                  </a>
+                </td> -->
               </tr>
               <tr *ngIf="customerList.length == 0">
                 <td colspan="12" class="text-center">No record found</td>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
+import { NgxPermissionsService } from 'ngx-permissions';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -9,9 +9,11 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
 
   pushRightClass: string = 'push-right';
+  user_name: string;
 
   constructor(
-    public router: Router
+    public router: Router,
+    private permissionsService: NgxPermissionsService
   ) {
     this.router.events.subscribe(val => {
       if (
@@ -25,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.user_name = localStorage.getItem('logedUserUserName');
   }
 
 
@@ -51,6 +53,7 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('logedUserUserId');
     localStorage.removeItem('logedUserUserName');
     localStorage.removeItem('userRole');
+    this.permissionsService.flushPermissions();
   }
 
 }

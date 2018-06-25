@@ -79,9 +79,8 @@
                 <td>{{invoice.created_at | date:'dd-MM-yyyy'}}</td>
                 <td>{{invoice.due_date | date:'dd-MM-yyyy'}}</td>                
                 <td>
-                  <label *ngIf="invoice.is_approve == 1" style="display: inline;">Pending</label>
-                  <select class="form-control" style="display: inline-flex; width: 75%;" name="is_approve" (change)="changeStatus($event.target.value,invoice.customer_details.id,invoice.id)">
-                    <option value='0'>Change Approve</option>
+                  <select class="form-control" name="is_approve" (change)="changeStatus($event.target.value,invoice.customer_details.id,invoice.id)" [(ngModel)]="invoice.is_approve">
+                    <option value='1'>Pending</option>
                     <option value='2'>Approve</option>
                     <option value='3'>Dis-Approve</option>
                   </select>

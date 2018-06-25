@@ -12,7 +12,17 @@ const routes: Routes = [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'customers', loadChildren: './customer/customer.module#CustomerModule' },
       { path: 'invoices', loadChildren: './invoice/invoice.module#InvoiceModule' },
-      { path: 'employee', loadChildren: './employee/employee.module#EmployeeModule' },
+      {
+        path: 'employees',
+        canActivate: [NgxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['admin'],
+            redirectTo: '/dashboard'
+          }
+        },
+        loadChildren: './employee/employee.module#EmployeeModule'
+      },
       {
         path: 'approval-invoice',
         canActivate: [NgxPermissionsGuard],
