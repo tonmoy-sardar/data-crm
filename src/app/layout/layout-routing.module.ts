@@ -24,6 +24,17 @@ const routes: Routes = [
         loadChildren: './employee/employee.module#EmployeeModule'
       },
       {
+        path: 'link-expire',
+        canActivate: [NgxPermissionsGuard],
+        data: {
+          permissions: {
+            only: ['admin'],
+            redirectTo: '/dashboard'
+          }
+        },
+        loadChildren: './link-expire/link-expire.module#LinkExpireModule'
+      },
+      {
         path: 'approval-invoice',
         canActivate: [NgxPermissionsGuard],
         data: {
