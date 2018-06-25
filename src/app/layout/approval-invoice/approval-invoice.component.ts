@@ -32,6 +32,7 @@ export class ApprovalInvoiceComponent implements OnInit {
   date: any;
   invoice_details_key: boolean;
   Search_invoice_list_key: boolean;
+  set_id;
   constructor(
     private approvalInvoiceService: ApprovalInvoiceService,
     private router: Router,
@@ -45,6 +46,7 @@ export class ApprovalInvoiceComponent implements OnInit {
     this.defaultPagination = 1;
     this.paginationMaxSize = Globals.paginationMaxSize;
     this.itemPerPage = Globals.itemPerPage;
+    this.set_id = localStorage.getItem('approvalSet');
     this.getApproveInvoiceList();
     this.getCustomerList();
   }
@@ -52,8 +54,11 @@ export class ApprovalInvoiceComponent implements OnInit {
   getApproveInvoiceList() {
     let params: URLSearchParams = new URLSearchParams();
     params.set('page', this.defaultPagination.toString());
+    if(this.set_id != null){
+      params.set('set_id', this.customer.toString());
+    }
     if (this.customer > 0) {
-      params.set('customer_id', this.customer.toString());
+      params.set('customer_id', this.set_id.toString());
     }
     if (this.date != undefined) {
       var frDate = new Date(this.date.year, this.date.month - 1, this.date.day)
